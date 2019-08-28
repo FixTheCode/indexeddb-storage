@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        
+        <title>Offline Web App Demo</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="favicon.ico">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>
+            Demonstration: 
+        </h1>
+        <h2>
+            Using IndexedDB for local storage
+        </h2>
+        <h3>
+            <p id="user-agent"></p>
+            <p id="user-message"></p>
+        </h3>
+        <div class="mycontainer">
+            <div class="mywebapp"> 
+                <input id="search-val" type="text" autofocus/>
+                <button id="search-btn" title="Search">Search</button>
+                <button id="showall-btn" title="Show All">Dump</button>
+                <p id="instructions">Search for a country by name or show all.</p>         
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" src="load.js"></script>
+        <script type="module">
+            import {search,show} from './db.js';
+            var ua = $('#user-agent');
+            ua.text('testing on : ' + navigator.userAgent);
+        
+            $('#search-btn').click(async function(){
+                var res = await search($('#search-val').val());
+                $('#instructions').text(res);
+            });
+
+            $('#showall-btn').click(async function(){
+                var res = await show();
+                var s = '';
+                for (var i = 0, len = res.length; i < len; i++) {
+                    s += (res[i]) + '<br/>';
+                }
+                $('#instructions').html(s);
+            });
+        </script>
+    </body>
+</html>
